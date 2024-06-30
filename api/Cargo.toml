@@ -1,0 +1,25 @@
+[package]
+name = "api"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+axum = "0.7"
+tokio = { version = "1", features = ["full"] }
+serde = { version = "1.0", features = ["derive"] }
+chrono = { version = "0.4", features = ["serde"] }
+diesel = { version = "2.2.0", features = ["postgres", "r2d2", "chrono", "numeric", "64-column-tables"] }
+dotenv = "0.15"
+log = "0.4"
+bigdecimal = { version = "0.4.0", features = ["serde"] }
+argon2 = "0.5"
+jsonwebtoken = "9.3"
+serde_json = "1.0"
+futures-util = "0.3"
+tower = "0.4"
+rand = "0.8"
+totp-rs = "5.5"
+base32 = "0.5.0"
+tower-http = { version = "0.5", features = ["cors"] }
+axum-extra = { version = "0.9.3", features = ["query"] }
+lapin = "2.3"
