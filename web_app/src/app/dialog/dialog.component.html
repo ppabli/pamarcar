@@ -1,0 +1,14 @@
+<h2 mat-dialog-title>Verificacion de TFA</h2>
+<mat-dialog-content>
+	<form [formGroup]="form" class="p-4">
+		<p class="text-center text-gray-600">Ingrese el codigo de verificacion generado por su aplicacion de autenticacion</p>
+		<mat-form-field appearance="outline" color="accent" class="w-full">
+			<mat-label>Ingrese el codigo</mat-label>
+			<input matInput formControlName="token" type="text" placeholder="123456">
+		</mat-form-field>
+	</form>
+</mat-dialog-content>
+<mat-dialog-actions>
+	<button mat-button (click)="close()">Close</button>
+	<button mat-button (click)="submit()">Submit</button>
+</mat-dialog-actions>
