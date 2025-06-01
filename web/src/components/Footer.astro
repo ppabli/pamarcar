@@ -1,0 +1,67 @@
+---
+
+import { getRelativeLocaleUrl } from "astro:i18n";
+import { useTranslations, getLangFromString, getSupportedLangs } from "../i18n/utils";
+import LangSelector from '../components/LangSelector.jsx';
+import ThemeSelector from '../components/ThemeSelector.jsx';
+
+const { defaultLocale } = Astro.props;
+const currentLocale: string = Astro.currentLocale || defaultLocale;
+
+const ui = useTranslations(getLangFromString(currentLocale));
+
+const links = [
+	{ name: ui('nav.home'), href: getRelativeLocaleUrl(currentLocale, "") },
+	{ name: ui('nav.services'), href: getRelativeLocaleUrl(currentLocale, "services") },
+	{ name: ui('nav.projects'), href: getRelativeLocaleUrl(currentLocale, "projects") },
+	{ name: ui('nav.contact'), href: getRelativeLocaleUrl(currentLocale, "contact") }
+];
+
+---
+
+<footer class="border-t border-gray-200 text-gray-600 bg-white mt-12 dark:text-gray-300 dark:bg-gray-900 dark:border-gray-700">
+
+	<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+
+		<div class="flex flex-col md:flex-row justify-between items-center gap-6">
+
+			<div class="flex flex-col items-center md:items-start gap-4">
+				<a href="/" class="text-xl font-bold text-gray-900 dark:text-white">MiLogo</a>
+				<div class="flex flex-wrap justify-center md:justify-start gap-4 text-sm">
+					{
+						links.map(link => (
+							<a href={link.href} class="hover:text-black dark:hover:text-white transition">{link.name}</a>
+						))
+					}
+				</div>
+			</div>
+
+			<div class="flex flex-col md:items-end gap-4">
+
+				<div class="flex items-center space-x-4">
+
+					<div>
+						<LangSelector
+							client:load
+							currentLocale={currentLocale}
+							supportedLocales={getSupportedLangs()}
+						/>
+					</div>
+
+					<div>
+						<ThemeSelector client:load/>
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+
+		<div class="mt-8 text-center text-xs text-gray-400 dark:text-gray-500">
+			&copy; {new Date().getFullYear()} MiEmpresa. Todos los derechos reservados.
+		</div>
+
+	</div>
+
+</footer>

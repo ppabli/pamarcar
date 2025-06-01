@@ -1,0 +1,7 @@
+export const CONFIG = {
+	API_REGISTRY_ENDPOINT: "http://localhost:8080/registries",
+	NOTIFICATION_DURATION: 5000,
+	CANVAS_LINE_WIDTH: 2,
+	MAX_PERSONS: 10,
+	MIN_PERSONS: 1
+};

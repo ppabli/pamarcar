@@ -1,0 +1,43 @@
+---
+
+import "../styles/global.css";
+
+const { defaultLocale } = Astro.props;
+const currentLocale = Astro.currentLocale || defaultLocale;
+
+---
+
+<html lang={currentLocale} class="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-300">
+
+	<head>
+
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="Astro Starter Kit: Minimal" />
+		<meta name="author" content="PAMARCAR Group" />
+
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+		<script>
+
+			const userPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+			const currentTheme = localStorage.getItem("theme") || (userPrefersDark ? "dark" : "light");
+			document.documentElement.classList.toggle("dark", currentTheme === "dark");
+
+			window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => {
+				const newTheme = e.matches ? "dark" : "light";
+				localStorage.setItem("theme", newTheme);
+				document.documentElement.classList.toggle("dark", newTheme === "dark");
+			});
+
+		</script>
+
+	</head>
+
+	<body class="min-h-screen flex flex-col">
+
+		<slot />
+
+	</body>
+
+</html>

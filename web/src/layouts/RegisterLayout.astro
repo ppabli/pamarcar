@@ -1,0 +1,15 @@
+---
+import "../styles/global.css";
+
+import BaseLayout from "./BaseLayout.astro";
+
+import Footer from "../components/Footer.astro";
+
+---
+
+<BaseLayout>
+	<main class="flex-grow">
+		<slot />
+	</main>
+	<Footer/>
+</BaseLayout>

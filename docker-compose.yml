@@ -1,0 +1,95 @@
+volumes:
+  db-data:
+
+networks:
+  default:
+    driver: bridge
+
+services:
+
+  database:
+    image: postgres:latest
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - default
+
+  rabbitmq:
+    image: rabbitmq:latest
+    container_name: rabbitmq
+    restart: always
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
+      RABBITMQ_DEFAULT_VHOST: ${RABBITMQ_VHOST}
+    ports:
+      - "5672:5672"
+    networks:
+      - default
+
+  api:
+    build:
+      context: ./api
+    container_name: api
+    restart: always
+    environment:
+      DB_URL: jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
+      DB_USER: ${POSTGRES_USER}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+    networks:
+      - default
+    ports:
+      - "8080:8080"
+    depends_on:
+      - database
+      - rabbitmq
+
+  web:
+    build:
+      context: ./web
+    container_name: web
+    restart: always
+    networks:
+      - default
+    ports:
+      - "4321:4321"
+    depends_on:
+      - api
+
+  proxy:
+    image: nginx:latest
+    container_name: proxy
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./proxy/config.conf:/etc/nginx/nginx.conf:ro
+      - ./proxy/certs:/etc/nginx/certs:ro
+      - ./proxy/www:/var/www/certbot
+    depends_on:
+      - api
+      - web
+    networks:
+      - default
+
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    volumes:
+      - ./proxy/certs:/etc/letsencrypt
+      - ./proxy/certs:/var/lib/letsencrypt
+      - ./proxy/www:/var/www/certbot
+    entrypoint: /bin/sh -c "trap exit TERM; while :; do sleep 6h & wait $${!}; certbot renew --webroot -w /var/www/certbot --quiet --deploy-hook 'nginx -s reload'; done"
+    depends_on:
+      - proxy
+    networks:
+      - default

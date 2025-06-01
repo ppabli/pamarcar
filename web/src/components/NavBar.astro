@@ -1,0 +1,70 @@
+---
+
+import { getRelativeLocaleUrl } from "astro:i18n";
+import { useTranslations, getLangFromString } from "../i18n/utils";
+
+const { defaultLocale } = Astro.props;
+const currentLocale: string = Astro.currentLocale || defaultLocale;
+
+const ui = useTranslations(getLangFromString(currentLocale));
+
+const links = [
+	{ name: ui('nav.home'), href: getRelativeLocaleUrl(currentLocale, "") },
+	{ name: ui('nav.services'), href: getRelativeLocaleUrl(currentLocale, "services") },
+	{ name: ui('nav.projects'), href: getRelativeLocaleUrl(currentLocale, "projects") },
+	{ name: ui('nav.contact'), href: getRelativeLocaleUrl(currentLocale, "contact") },
+];
+
+---
+
+<nav class="w-full bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
+
+	<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+		<div class="flex justify-between h-16 items-center">
+
+			<div class="flex items-center">
+
+				<a href={links[0].href} class="text-xl font-bold text-gray-900 dark:text-white">MiLogo</a>
+
+			</div>
+
+			<div class="hidden md:flex space-x-8 items-center">
+				{
+					links.map(link => (
+						<a href={link.href} class="text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors duration-200 text-sm font-medium">
+							{link.name}
+						</a>
+					))
+				}
+				<a href={getRelativeLocaleUrl(currentLocale, "register")} class="inline-block bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">{ui('nav.traveler_registry')}</a>
+			</div>
+
+			<div class="md:hidden">
+
+				<button id="mobile-menu-button" class="text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white focus:outline-none" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+
+					<svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+					</svg>
+
+				</button>
+
+			</div>
+
+		</div>
+
+	</div>
+
+	<div id="mobile-menu" class="md:hidden hidden px-4 pb-4 bg-white dark:bg-gray-900">
+		{
+			links.map(link => (
+				<a href={link.href} class="block py-2 text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white border-b border-gray-100 dark:border-gray-700">
+					{link.name}
+				</a>
+			))
+		}
+		<a href={getRelativeLocaleUrl(currentLocale, "register")} class="block py-2 text-white bg-blue-600 hover:bg-blue-700 transition px-4 rounded-md">{ui('nav.traveler_registry')}</a>
+	</div>
+
+</nav>

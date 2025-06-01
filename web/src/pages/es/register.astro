@@ -1,0 +1,1386 @@
+
+---
+import "../../styles/global.css";
+import RegisterLayout from "../../layouts/RegisterLayout.astro";
+---
+
+<RegisterLayout>
+	<nav class="w-full bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
+
+		<div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+
+			<div class="flex justify-between h-14 sm:h-16 items-center">
+
+				<button type="button" onclick="history.back()" class="text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:underline flex items-center gap-2 transition-colors text-sm sm:text-base" aria-label="Volver a la página anterior">
+
+					<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+
+					</svg>
+
+					<span>Volver</span>
+
+				</button>
+
+			</div>
+
+		</div>
+
+	</nav>
+
+	<main class="flex-grow bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100">
+
+		<section class="max-w-4xl mx-auto py-4 sm:py-8 px-3 sm:px-6 lg:px-8">
+
+			<h1 class="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8">Parte de Viajeros</h1>
+
+			<form id="travelers-form" class="space-y-4 sm:space-y-6">
+
+				<details class="border border-gray-300 dark:border-gray-700 rounded-lg overflow-hidden shadow-sm">
+
+					<summary class="bg-gray-100 dark:bg-gray-800 px-4 sm:px-6 py-4 cursor-pointer flex justify-between items-center font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+
+						<span class="text-sm sm:text-base">Datos generales</span>
+
+						<div class="flex items-center gap-2 sm:gap-3">
+
+							<div class="invisible py-1.5 sm:py-2 rounded-md text-xs sm:text-sm">
+								.
+							</div>
+
+							<svg class="w-5 h-5 transform transition-transform details-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+
+							</svg>
+
+						</div>
+
+					</summary>
+
+					<fieldset class="p-4 sm:p-6 space-y-4 sm:space-y-6">
+
+						<legend class="sr-only">Datos generales</legend>
+
+						<div class="grid grid-cols-1 gap-4 sm:gap-6">
+
+							<label class="block space-y-2">
+
+								<span class="text-sm font-medium text-gray-700 dark:text-gray-300">Número de reserva *</span>
+
+								<input type="number" min="0" name="booking.id" required class="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:text-white transition-colors" placeholder="Ej: 1" title="Solo se permiten números"/>
+
+							</label>
+
+							<label class="block space-y-2">
+
+								<span class="text-sm font-medium text-gray-700 dark:text-gray-300">Código de seguridad *</span>
+
+								<input type="text" name="booking.security_code" required class="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:text-white transition-colors" placeholder="Ej: 4d3c17e1-72eb-45c6-820d-5ee780d905b5"/>
+
+							</label>
+
+						</div>
+
+						<label class="block space-y-2">
+
+							<span class="text-sm font-medium text-gray-700 dark:text-gray-300">Comentarios</span>
+
+							<textarea name="booking.comment" rows="4" class="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:text-white transition-colors" placeholder="Comentarios adicionales (opcional)"/>
+
+						</label>
+
+					</fieldset>
+
+				</details>
+
+				<details class="border border-gray-300 dark:border-gray-700 rounded-lg overflow-hidden shadow-sm">
+
+					<summary class="bg-gray-100 dark:bg-gray-800 px-4 sm:px-6 py-4 cursor-pointer flex justify-between items-center font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+
+						<span class="text-sm sm:text-base">Personas</span>
+
+						<div class="flex items-center gap-2 sm:gap-3">
+
+							<button type="button" onclick="addPerson()" class="bg-blue-600 hover:bg-blue-700 dark:bg-blue-400 dark:hover:bg-blue-400 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-md text-xs sm:text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2" aria-label="Añadir nueva persona">
+								+ Añadir
+							</button>
+
+							<svg class="w-5 h-5 transform transition-transform details-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+
+							</svg>
+
+						</div>
+
+					</summary>
+
+					<section id="persons" class="p-4 sm:p-6 space-y-4 sm:space-y-6">
+
+						<details class="person-block border border-gray-200 dark:border-gray-600 rounded-lg overflow-hidden" data-person-index="0">
+
+							<summary class="bg-gray-100 dark:bg-gray-800 px-4 sm:px-6 py-4 cursor-pointer flex justify-between items-center font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+
+								<span class="text-sm sm:text-base">Persona 1</span>
+
+								<div class="flex items-center gap-2 sm:gap-3">
+
+									<div class="invisible py-1.5 sm:py-2 rounded-md text-xs sm:text-sm">
+										.
+									</div>
+
+									<svg class="w-5 h-5 transform transition-transform details-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+
+									</svg>
+
+								</div>
+
+							</summary>
+
+							<div class="p-3 sm:p-6 space-y-4 sm:space-y-6">
+
+								<details class="border border-gray-200 dark:border-gray-600 rounded-md overflow-hidden">
+
+									<summary class="px-3 sm:px-4 py-4 bg-gray-50 dark:bg-gray-800 cursor-pointer font-medium text-xs sm:text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex justify-between items-center">
+
+										<span>Documentación</span>
+
+										<svg class="w-4 h-4 transform transition-transform details-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+
+											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+
+										</svg>
+
+									</summary>
+
+									<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 p-3 sm:p-4">
+
+										<label class="block space-y-2">
+
+											<span class="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">Tipo de documento *</span>
+
+											<select name="person_0_document_type" required class="w-full px-2 sm:px-3 py-2 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:text-white">
+
+												<option value="">Seleccionar tipo</option>
+
+												<option value="ID">DNI</option>
+
+												<option value="PASSPORT">Pasaporte</option>
+
+											</select>
+
+										</label>
+
+										<label class="block space-y-2">
+
+											<span class="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">Número de documento *</span>
+
+											<input type="text" name="person_0_document_number" required class="w-full px-2 sm:px-3 py-2 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:text-white" placeholder="Número del documento"/>
+
+										</label>
+
+										<label class="block space-y-2">
+
+											<span class="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">Fecha de expedición *</span>
+
+											<input type="date" name="person_0_document_issued_date" required class="w-full px-2 sm:px-3 py-2 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:text-white"/>
+
+										</label>
+
+										<label class="block space-y-2">
+
+											<span class="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">Soporte de documento *</span>
+
+											<input type="text" name="person_0_document_support" required class="w-full px-2 sm:px-3 py-2 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:text-white" placeholder="Ej: Físico, Digital"/>
+
+										</label>
+
+									</div>
+
+								</details>
+
+								<details class="border border-gray-200 dark:border-gray-600 rounded-md overflow-hidden">
+
+									<summary class="px-3 sm:px-4 py-4 bg-gray-50 dark:bg-gray-800 cursor-pointer font-medium text-xs sm:text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex justify-between items-center">
+
+										<span>Datos personales</span>
+
+										<svg class="w-4 h-4 transform transition-transform details-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+
+											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+
+										</svg>
+
+									</summary>
+
+									<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 p-3 sm:p-4">
+
+										<label class="block space-y-2">
+
+											<span class="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">Nombre *</span>
+
+											<input type="text" name="person_0_first_name" required class="w-full px-2 sm:px-3 py-2 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:text-white" placeholder="Nombre" />
+
+										</label>
+
+										<label class="block space-y-2">
+
+											<span class="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">Apellidos *</span>
+
+											<input type="text" name="person_0_last_name" required class="w-full px-2 sm:px-3 py-2 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:text-white" placeholder="Apellidos"/>
+
+										</label>
+
+										<label class="block space-y-2">
+
+											<span class="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">Fecha de nacimiento *</span>
+
+											<input type="date" name="person_0_birth_date" required class="w-full px-2 sm:px-3 py-2 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:text-white"/>
+
+										</label>
+
+										<label class="block space-y-2">
+
+											<span class="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">Sexo *</span>
+
+											<select name="person_0_gender" required class="w-full px-2 sm:px-3 py-2 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:text-white">
+
+												<option value="">Seleccionar</option>
+
+												<option value="MALE">Hombre</option>
+
+												<option value="FEMALE">Mujer</option>
+
+												<option value="OTHER">Otro</option>
+
+											</select>
+
+										</label>
+
+										<label class="block sm:col-span-2 space-y-2">
+
+											<span class="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">Nacionalidad *</span>
+
+											<input type="text" name="person_0_nationality" required class="w-full px-2 sm:px-3 py-2 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:text-white" placeholder="Nacionalidad" />
+
+										</label>
+
+									</div>
+
+								</details>
+
+								<details class="border border-gray-200 dark:border-gray-600 rounded-md overflow-hidden">
+
+									<summary class="px-3 sm:px-4 py-4 bg-gray-50 dark:bg-gray-800 cursor-pointer font-medium text-xs sm:text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex justify-between items-center">
+
+										<span>Contacto y dirección</span>
+
+										<svg class="w-4 h-4 transform transition-transform details-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+
+											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+
+										</svg>
+
+									</summary>
+
+									<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 p-3 sm:p-4">
+
+										<label class="block space-y-2">
+
+											<span class="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">Teléfono *</span>
+
+											<input type="tel" name="person_0_phone" required class="w-full px-2 sm:px-3 py-2 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:text-white" placeholder="+34 000 000 000"/>
+
+										</label>
+
+										<label class="block space-y-2">
+
+											<span class="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">Email *</span>
+
+											<input type="email" name="person_0_email" required class="w-full px-2 sm:px-3 py-2 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:text-white" placeholder="correo@ejemplo.com"/>
+
+										</label>
+
+										<label class="block space-y-2">
+
+											<span class="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">Ciudad *</span>
+
+											<input type="text" name="person_0_city" required class="w-full px-2 sm:px-3 py-2 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:text-white" placeholder="Ciudad"/>
+
+										</label>
+
+										<label class="block space-y-2">
+
+											<span class="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">Provincia *</span>
+
+											<input type="text" name="person_0_province" required class="w-full px-2 sm:px-3 py-2 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:text-white" placeholder="Provincia"/>
+
+										</label>
+
+										<label class="block space-y-2">
+
+											<span class="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">País *</span>
+
+											<input type="text" name="person_0_country" required class="w-full px-2 sm:px-3 py-2 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:text-white" placeholder="País"/>
+
+										</label>
+
+										<label class="block space-y-2">
+
+											<span class="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">Código Postal *</span>
+
+											<input type="text" name="person_0_postal_code" required pattern="[0-9]{5}" class="w-full px-2 sm:px-3 py-2 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:text-white" placeholder="00000" title="Código postal de 5 dígitos"/>
+
+										</label>
+
+									</div>
+
+								</details>
+
+								<div class="space-y-3 sm:space-y-4 pt-3 sm:pt-4 border-t border-gray-200 dark:border-gray-700">
+
+									<label class="block space-y-2">
+
+										<span class="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">Firma *</span>
+
+										<div class="relative">
+
+											<canvas id="person_0_signature" class="w-full h-24 sm:h-32 border-2 border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 cursor-crosshair touch-none" data-empty="true"></canvas>
+
+											<div class="absolute top-2 right-2 text-xs text-gray-400 pointer-events-none" id="person_0_signature_placeholder">
+												Toque y arrastre para firmar
+											</div>
+
+										</div>
+
+									</label>
+
+									<button id="person_0_clear_signature" type="button" onclick="clearSignature('person_0_signature')" class="px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
+										Limpiar firma
+									</button>
+
+								</div>
+
+							</div>
+
+						</details>
+
+					</section>
+
+				</details>
+
+				<div id="status-container" class="hidden space-y-2 p-3 sm:p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border"></div>
+
+				<div class="pt-4 sm:pt-6">
+
+					<button id="submit-button" type="submit" disabled class="w-full bg-gray-400 text-white py-3 sm:py-4 px-4 sm:px-6 rounded-lg font-medium text-base sm:text-lg transition-all duration-200 cursor-not-allowed disabled:opacity-50">
+
+						<span class="flex items-center justify-center gap-2">
+
+							<span id="submit-text">Enviar parte de viajeros</span>
+
+							<svg id="submit-spinner" class="hidden animate-spin h-5 w-5" fill="none" viewBox="0 0 24 24">
+
+								<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+
+								<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+
+							</svg>
+
+						</span>
+
+					</button>
+
+				</div>
+
+			</form>
+
+		</section>
+
+	</main>
+
+</RegisterLayout>
+
+<script type="module">
+
+	import { CONFIG } from '/scripts/config/constants.js';
+	import { Utils } from '/scripts/utils/utils.js';
+	import { NotificationManager } from '/scripts/classes/notificationManager.js';
+
+	const AppState = {
+		personCount: 1,
+		canvasInstances: new Map(),
+		isSubmitting: false
+	};
+
+	class SignatureCanvas {
+
+		constructor(canvasId) {
+
+			this.canvasId = canvasId;
+			this.canvas = document.getElementById(canvasId);
+
+			if (!this.canvas) {
+				throw new Error(`Canvas con ID ${canvasId} no encontrado`);
+			}
+
+			this.ctx = this.canvas.getContext('2d');
+			this.drawing = false;
+			this.isEmpty = true;
+			this.lastPos = null;
+
+			this.init();
+
+		}
+
+		init() {
+
+			this.setupCanvas();
+			this.bindEvents();
+			this.canvas.dataset.empty = 'true';
+
+		}
+
+		setupCanvas() {
+
+			const rect = this.canvas.getBoundingClientRect();
+			const scale = window.devicePixelRatio || 1;
+
+			this.canvas.width = rect.width * scale;
+			this.canvas.height = rect.height * scale;
+
+			this.ctx.scale(scale, scale);
+
+			this.ctx.lineCap = 'round';
+			this.ctx.lineJoin = 'round';
+			this.ctx.lineWidth = CONFIG.CANVAS_LINE_WIDTH;
+			this.ctx.strokeStyle = '#000000';
+			this.ctx.imageSmoothingEnabled = true;
+
+		}
+
+		bindEvents() {
+
+			this.canvas.addEventListener('mousedown', this.handleStart.bind(this));
+			this.canvas.addEventListener('mousemove', this.handleMove.bind(this));
+			this.canvas.addEventListener('mouseup', this.handleEnd.bind(this));
+			this.canvas.addEventListener('mouseleave', this.handleEnd.bind(this));
+
+			this.canvas.addEventListener('touchstart', this.handleTouchStart.bind(this), { passive: false });
+			this.canvas.addEventListener('touchmove', this.handleTouchMove.bind(this), { passive: false });
+			this.canvas.addEventListener('touchend', this.handleTouchEnd.bind(this), { passive: false });
+			this.canvas.addEventListener('touchcancel', this.handleEnd.bind(this));
+
+		}
+
+		handleStart(e) {
+
+			this.drawing = true;
+			this.lastPos = this.getEventPos(e);
+			this.ctx.beginPath();
+			this.ctx.moveTo(this.lastPos.x, this.lastPos.y);
+
+		}
+
+		handleMove(e) {
+
+			if (!this.drawing) {
+
+				return;
+
+			}
+
+			const currentPos = this.getEventPos(e);
+
+			this.ctx.lineTo(currentPos.x, currentPos.y);
+			this.ctx.stroke();
+
+			this.lastPos = currentPos;
+			this.markAsDrawn();
+
+		}
+
+		handleEnd() {
+
+			if (!this.drawing) {
+
+				return;
+
+			}
+
+			this.drawing = false;
+			this.ctx.beginPath();
+
+		}
+
+		handleTouchStart(e) {
+
+			e.preventDefault();
+
+			if (e.touches.length === 1) {
+
+				const touch = e.touches[0];
+				this.handleStart(this.createMouseEvent('mousedown', touch));
+
+			}
+
+		}
+
+		handleTouchMove(e) {
+
+			e.preventDefault();
+
+			if (e.touches.length === 1) {
+
+				const touch = e.touches[0];
+				this.handleMove(this.createMouseEvent('mousemove', touch));
+
+			}
+
+		}
+
+		handleTouchEnd(e) {
+
+			e.preventDefault();
+			this.handleEnd();
+
+		}
+
+		createMouseEvent(type, touch) {
+
+			return new MouseEvent(type, {
+				clientX: touch.clientX,
+				clientY: touch.clientY
+			});
+
+		}
+
+		getEventPos(e) {
+
+			const rect = this.canvas.getBoundingClientRect();
+
+			return {
+				x: e.clientX - rect.left,
+				y: e.clientY - rect.top
+			};
+
+		}
+
+		markAsDrawn() {
+
+			if (this.isEmpty) {
+
+				this.isEmpty = false;
+				this.canvas.dataset.empty = 'false';
+				this.togglePlaceholder(false);
+				FormValidator.updateSubmitButton();
+
+			}
+
+		}
+
+		togglePlaceholder(show) {
+
+			const placeholder = document.getElementById(`${this.canvasId}_placeholder`);
+
+			if (placeholder) {
+
+				placeholder.style.display = show ? 'block' : 'none';
+
+			}
+
+		}
+
+		clear() {
+
+			this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+			this.isEmpty = true;
+			this.canvas.dataset.empty = 'true';
+			this.togglePlaceholder(true);
+			FormValidator.updateSubmitButton();
+
+		}
+
+		getDataURL() {
+
+			return this.isEmpty ? '' : this.canvas.toDataURL('image/png', 0.8);
+
+		}
+
+		resize() {
+
+			const imageData = this.isEmpty ? null : this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
+			this.setupCanvas();
+
+			if (imageData && !this.isEmpty) {
+
+				this.ctx.putImageData(imageData, 0, 0);
+
+			}
+
+		}
+	}
+
+	class PersonManager {
+
+		static addPerson() {
+
+			if (AppState.personCount >= CONFIG.MAX_PERSONS) {
+
+				NotificationManager.show(`Máximo ${CONFIG.MAX_PERSONS} personas permitidas`, 'warning');
+				return;
+
+			}
+
+			const personsContainer = document.getElementById('persons');
+			const firstPerson = personsContainer.querySelector('.person-block');
+
+			if (!firstPerson) {
+
+				console.error('No se encontró el bloque de persona base');
+				return;
+
+			}
+
+			const newPerson = firstPerson.cloneNode(true);
+
+			this.setupNewPerson(newPerson);
+			this.clearPersonFields(newPerson);
+
+			personsContainer.appendChild(newPerson);
+
+			const canvasId = `person_${AppState.personCount}_signature`;
+
+			try {
+
+				const signatureCanvas = new SignatureCanvas(canvasId);
+				AppState.canvasInstances.set(canvasId, signatureCanvas);
+
+			} catch (error) {
+
+				console.error('Error creando canvas:', error);
+				NotificationManager.show('Error al crear área de firma', 'error');
+				return;
+
+			}
+
+			UIManager.initializeDetailsToggle(personsContainer);
+
+			AppState.personCount++;
+			FormValidator.updateSubmitButton();
+
+			newPerson.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+		}
+
+		static setupNewPerson(personElement) {
+
+			const index = AppState.personCount;
+			personElement.dataset.personIndex = index;
+
+			this.updateFieldNames(personElement, index);
+			this.updatePersonHeader(personElement, index);
+
+		}
+
+		static updateFieldNames(personElement, index) {
+
+			const fields = personElement.querySelectorAll('input, select, textarea, canvas, button');
+
+			fields.forEach(field => {
+
+				if (field.name) {
+
+					field.name = field.name.replace(/person_\d+_/, `person_${index}_`);
+
+				}
+
+				if (field.id) {
+
+					field.id = field.id.replace(/person_\d+_/, `person_${index}_`);
+
+				}
+
+			});
+
+			const clearButton = personElement.querySelector('button[id$="_clear_signature"]');
+
+			if (clearButton) {
+
+				clearButton.onclick = () => this.clearSignature(`person_${index}_signature`);
+
+			}
+
+			const placeholder = personElement.querySelector('[id$="_placeholder"]');
+
+			if (placeholder) {
+
+				placeholder.id = `person_${index}_signature_placeholder`;
+
+			}
+
+		}
+
+		static clearPersonFields(element) {
+
+			const fields = element.querySelectorAll('input, select, textarea');
+
+			fields.forEach(field => {
+
+				if (field.type === 'checkbox' || field.type === 'radio') {
+
+					field.checked = false;
+
+				} else {
+
+					field.value = '';
+
+				}
+
+			});
+
+			const canvas = element.querySelector('canvas');
+
+			if (canvas) {
+
+				canvas.dataset.empty = 'true';
+				const placeholder = element.querySelector('[id$="_placeholder"]');
+
+				if (placeholder) {
+
+					placeholder.style.display = 'block';
+
+				}
+
+			}
+		}
+
+		static removePerson(index) {
+
+			const personElements = document.querySelectorAll('.person-block');
+
+			if (personElements.length <= CONFIG.MIN_PERSONS) {
+
+				NotificationManager.show('Debe haber al menos una persona registrada', 'warning');
+
+				return;
+
+			}
+
+			const personToRemove = document.querySelector(`[data-person-index="${index}"]`);
+
+			if (!personToRemove) {
+
+				console.warn(`No se encontró persona con índice ${index}`);
+				return;
+
+			}
+
+			const canvasId = `signature_${index}`;
+			if (AppState.canvasInstances.has(canvasId)) {
+
+				AppState.canvasInstances.delete(canvasId);
+
+			}
+
+			personToRemove.remove();
+
+			AppState.personCount--;
+			this.renumberPersons();
+
+			FormValidator.updateSubmitButton();
+			NotificationManager.show('Persona eliminada correctamente', 'success');
+
+		}
+
+		static renumberPersons() {
+
+			const personElements = document.querySelectorAll('.person-block');
+
+			personElements.forEach((personElement, newIndex) => {
+
+				const oldIndex = parseInt(personElement.dataset.personIndex);
+
+				if (oldIndex !== newIndex) {
+
+					personElement.dataset.personIndex = newIndex;
+
+					this.updateFieldNames(personElement, newIndex);
+
+					this.updatePersonHeader(personElement, newIndex);
+
+					const oldCanvasId = `person_${oldIndex}_signature`;
+					const newCanvasId = `person_${newIndex}_signature`;
+
+					if (AppState.canvasInstances.has(oldCanvasId)) {
+
+						const canvasInstance = AppState.canvasInstances.get(oldCanvasId);
+
+						AppState.canvasInstances.delete(oldCanvasId);
+						AppState.canvasInstances.set(newCanvasId, canvasInstance);
+
+						canvasInstance.canvasId = newCanvasId;
+
+						if (canvasInstance.canvas) {
+
+							canvasInstance.canvas.id = newCanvasId;
+
+						}
+
+					}
+
+				}
+
+			});
+
+		}
+
+		static updatePersonHeader(personElement, index) {
+
+			const header = personElement.querySelector('summary');
+
+			if (header) {
+
+				const isFirstPerson = index === 0;
+
+				header.innerHTML = `
+					<span class="text-sm sm:text-base">Persona ${index + 1}</span>
+					<div class="flex items-center gap-2 sm:gap-3">
+						${!isFirstPerson ? `
+							<button type="button" onclick="PersonManager.removePerson(${index})" class="bg-red-600 hover:bg-red-700 dark:bg-red-400 dark:hover:bg-red-400 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-md text-xs sm:text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2" aria-label="Eliminar persona ${index + 1}">
+								- Eliminar
+							</button>
+						` : ''}
+						<svg class="w-5 h-5 transform transition-transform details-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+						</svg>
+					</div>
+				`;
+
+			}
+
+		}
+
+		static clearSignature(canvasId) {
+
+			const signatureCanvas = AppState.canvasInstances.get(canvasId);
+
+			if (signatureCanvas) {
+
+				signatureCanvas.clear();
+
+			} else {
+
+				console.warn(`Canvas ${canvasId} no encontrado`);
+
+			}
+
+		}
+
+	}
+
+	class FormValidator {
+
+		static updateSubmitButton() {
+
+			const submitButton = document.getElementById('submit-button');
+
+			if (!submitButton) {
+				return;
+			}
+
+			const isValid = this.validateForm();
+
+			submitButton.disabled = !isValid;
+			submitButton.classList.toggle('bg-gray-400', !isValid);
+			submitButton.classList.toggle('cursor-not-allowed', !isValid);
+			submitButton.classList.toggle('bg-blue-600', isValid);
+			submitButton.classList.toggle('hover:bg-blue-700', isValid);
+			submitButton.classList.toggle('cursor-pointer', isValid);
+
+		}
+
+		static validateForm() {
+
+			const form = document.getElementById('travelers-form');
+
+			if (!form) {
+				return false;
+			}
+
+			const requiredFields = form.querySelectorAll('[required]');
+			for (const field of requiredFields) {
+				if (!field.value.trim()) {
+					return false;
+				}
+			}
+
+			const canvases = form.querySelectorAll('canvas');
+			for (const canvas of canvases) {
+				if (canvas.dataset.empty === 'true') {
+					return false;
+				}
+			}
+
+			return true;
+
+		}
+
+		static validatePersonData(person) {
+
+			const validators = [
+				{ field: 'firstName', message: 'El nombre es obligatorio' },
+				{ field: 'lastName', message: 'Los apellidos son obligatorios' },
+				{ field: 'documentNumber', message: 'El número de documento es obligatorio' },
+				{ field: 'documentType', message: 'El tipo de documento es obligatorio' },
+				{ field: 'birthDate', message: 'La fecha de nacimiento es obligatoria' },
+				{ field: 'gender', message: 'El sexo es obligatorio' },
+				{ field: 'nationality', message: 'La nacionalidad es obligatoria' },
+				{ field: 'phone', message: 'El teléfono es obligatorio' },
+				{ field: 'email', message: 'El email es obligatorio' },
+				{ field: 'city', message: 'El municipio es obligatorio' },
+				{ field: 'province', message: 'La provincia es obligatoria' },
+				{ field: 'country', message: 'El país es obligatorio' },
+				{ field: 'postalCode', message: 'El código postal es obligatorio' },
+				{ field: 'signature', message: 'La firma es obligatoria' },
+				{ field: 'documentIssuedDate', message: 'La fecha de expedición es obligatoria' },
+				{ field: 'documentSupport', message: 'El soporte de documento es obligatorio' }
+			];
+
+			for (const validator of validators) {
+				if (!person[validator.field]) {
+					return { valid: false, error: validator.message };
+				}
+			}
+
+			if (!Utils.isValidDate(person.birthDate)) {
+				return { valid: false, error: 'Fecha de nacimiento inválida' };
+			}
+
+			if (!Utils.isValidDate(person.documentIssuedDate)) {
+				return { valid: false, error: 'Fecha de expedición inválida' };
+			}
+
+			if (!Utils.isValidEmail(person.email)) {
+				return { valid: false, error: 'Email inválido' };
+			}
+
+			if (!Utils.isValidPostalCode(person.postalCode)) {
+				return { valid: false, error: 'Código postal inválido (debe tener 5 dígitos)' };
+			}
+
+			return { valid: true };
+
+		}
+
+	}
+
+	class FormProcessor {
+
+		static async submitForm(event) {
+
+			event.preventDefault();
+
+			if (AppState.isSubmitting) {
+
+				NotificationManager.show('Ya se está procesando el formulario', 'warning');
+				return;
+
+			}
+
+			AppState.isSubmitting = true;
+
+			const form = document.getElementById('travelers-form');
+			const formData = new FormData(form);
+			const personBlocks = document.querySelectorAll('.person-block');
+
+			try {
+
+				const bookingId = formData.get('booking.id')?.trim();
+
+				if (!bookingId) {
+					throw new Error('El número de reserva es obligatorio');
+				}
+
+				const securityCode = formData.get('booking.security_code')?.trim();
+
+				if (!securityCode) {
+					throw new Error('El código de seguridad es obligatorio');
+				}
+
+				const comments = formData.get('booking.comments')?.trim() || '';
+
+				this.updateSubmitUI(true);
+				await this.processPersons(formData, personBlocks, bookingId, securityCode, comments);
+
+			} catch (error) {
+
+				console.error('Error general:', error);
+				NotificationManager.show(error.message || 'Error al procesar el formulario', 'error');
+				this.showErrorStatus(error.message);
+
+			} finally {
+
+				this.updateSubmitUI(false);
+				AppState.isSubmitting = false;
+
+			}
+
+		}
+
+		static async processPersons(formData, personBlocks, booking_id, security_code, comments) {
+
+			const statusContainer = document.getElementById('status-container');
+			statusContainer.classList.remove('hidden');
+			statusContainer.innerHTML = '';
+
+			const results = [];
+
+			for (let index = 0; index < personBlocks.length; index++) {
+
+				const statusEl = this.createStatusElement(index, 'processing');
+				statusContainer.appendChild(statusEl);
+
+				try {
+
+					const person = this.extractPersonData(formData, index);
+					const validation = FormValidator.validatePersonData(person);
+
+					if (!validation.valid) {
+
+						throw new Error(validation.error);
+
+					}
+
+					await this.sendPersonData(person, booking_id, security_code, comments);
+					this.updateStatusElement(statusEl, index, 'success');
+					results.push({ success: true, index });
+
+				} catch (error) {
+
+					console.error(`Error enviando persona ${index + 1}:`, error);
+					this.updateStatusElement(statusEl, index, 'error', error.message);
+					results.push({ success: false, index, error: error.message });
+
+				}
+
+			}
+
+			this.showFinalResults(results);
+		}
+
+		static createStatusElement(index, status) {
+
+			const statusEl = document.createElement('div');
+
+			const statusConfig = {
+				processing: {
+					class: 'bg-gray-100 dark:bg-gray-700',
+					icon: '<div class="animate-spin h-4 w-4 border-2 border-blue-500 border-t-transparent rounded-full"></div>',
+					text: 'Procesando...'
+				},
+				success: {
+					class: 'bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200',
+					icon: '<svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>',
+					text: 'Enviado correctamente'
+				},
+				error: {
+					class: 'bg-red-100 dark:bg-red-800 text-red-800 dark:text-red-200',
+					icon: '<svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>',
+					text: 'Error'
+				}
+			};
+
+			const config = statusConfig[status];
+			statusEl.className = `flex items-center gap-2 p-2 rounded transition-colors ${config.class}`;
+			statusEl.innerHTML = `${config.icon}<span>Persona ${index + 1}: ${config.text}</span>`;
+
+			return statusEl;
+
+		}
+
+		static updateStatusElement(statusEl, index, status, errorMessage = '') {
+
+			const newEl = this.createStatusElement(index, status);
+
+			if (status === 'error' && errorMessage) {
+
+				newEl.querySelector('span').textContent = `Persona ${index + 1}: ${errorMessage}`;
+
+			}
+
+			statusEl.replaceWith(newEl);
+
+		}
+
+		static showFinalResults(results) {
+
+			const successCount = results.filter(r => r.success).length;
+			const totalCount = results.length;
+
+			if (successCount === totalCount) {
+
+				NotificationManager.show('Todas las personas se enviaron correctamente', 'success');
+
+			} else if (successCount > 0) {
+
+				NotificationManager.show(`${successCount} de ${totalCount} personas enviadas correctamente`, 'warning');
+
+			} else {
+
+				NotificationManager.show('No se pudo enviar ninguna persona', 'error');
+
+			}
+
+		}
+
+		static extractPersonData(formData, index) {
+
+			const prefix = `person_${index}_`;
+			const canvasId = `${prefix}signature`;
+			const signatureCanvas = AppState.canvasInstances.get(canvasId);
+
+			return {
+				documentType: formData.get(`${prefix}document_type`) || '',
+				documentNumber: formData.get(`${prefix}document_number`)?.trim() || '',
+				documentIssuedDate: formData.get(`${prefix}document_issued_date`) || '',
+				documentSupport: formData.get(`${prefix}document_support`)?.trim() || '',
+				firstName: formData.get(`${prefix}first_name`)?.trim() || '',
+				lastName: formData.get(`${prefix}last_name`)?.trim() || '',
+				birthDate: formData.get(`${prefix}birth_date`) || '',
+				gender: formData.get(`${prefix}gender`) || '',
+				nationality: formData.get(`${prefix}nationality`)?.trim() || '',
+				phone: formData.get(`${prefix}phone`)?.trim() || '',
+				email: formData.get(`${prefix}email`)?.trim() || '',
+				city: formData.get(`${prefix}city`)?.trim() || '',
+				province: formData.get(`${prefix}province`)?.trim() || '',
+				country: formData.get(`${prefix}country`)?.trim() || '',
+				postalCode: formData.get(`${prefix}postal_code`)?.trim() || '',
+				signature: signatureCanvas ? signatureCanvas.getDataURL() : ''
+			};
+
+		}
+
+		static async sendPersonData(person, bookingId, securityCode, comments) {
+
+			const payload = {
+				booking: {
+					id: bookingId,
+					securityCode: securityCode
+				},
+				comments: comments,
+				documentType: person.documentType,
+				documentNumber: person.documentNumber,
+				documentIssuedDate: person.documentIssuedDate,
+				documentSupport: person.documentSupport,
+				firstName: person.firstName,
+				lastName: person.lastName,
+				birthDate: person.birthDate,
+				gender: person.gender,
+				nationality: person.nationality,
+				phone: person.phone,
+				email: person.email,
+				city: person.city,
+				province: person.province,
+				country: person.country,
+				postalCode: person.postalCode,
+				signature: person.signature
+			};
+
+			const response = await fetch(CONFIG.API_REGISTRY_ENDPOINT, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(payload)
+			});
+
+			if (!response.ok) {
+				const errorData = await response.json().catch(() => ({}));
+				throw new Error(errorData.message || `Error del servidor (${response.status})`);
+			}
+
+			return await response.json();
+
+		}
+
+		static updateSubmitUI(isSubmitting) {
+
+			const submitButton = document.getElementById('submit-button');
+			const submitText = document.getElementById('submit-text');
+			const submitSpinner = document.getElementById('submit-spinner');
+			const statusContainer = document.getElementById('status-container');
+
+			if (!submitButton || !submitText || !submitSpinner) {
+				return;
+			}
+
+			submitButton.disabled = isSubmitting;
+			submitText.textContent = isSubmitting ? 'Enviando...' : 'Enviar parte de viajeros';
+			submitSpinner.classList.toggle('hidden', !isSubmitting);
+
+			if (isSubmitting) {
+				statusContainer?.classList.remove('hidden');
+			}
+
+		}
+
+		static showErrorStatus(message) {
+
+			const statusContainer = document.getElementById('status-container');
+
+			if (!statusContainer) {
+				return;
+			}
+
+			statusContainer.innerHTML = `
+				<div class="flex items-center gap-2 p-2 rounded bg-red-100 dark:bg-red-800 text-red-800 dark:text-red-200">
+				<svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+					<path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+				</svg>
+				<span>Error: ${message}</span>
+				</div>
+			`;
+
+		}
+
+	}
+
+	class UIManager {
+
+		static initializeDetailsToggle(container = document) {
+
+			const detailsElements = container.querySelectorAll('details');
+
+			detailsElements.forEach(details => {
+
+				const arrow = details.querySelector('.details-arrow');
+
+				details.addEventListener('toggle', () => {
+
+					arrow.style.transform = details.open ? 'rotate(180deg)' : 'rotate(0deg)';
+
+				});
+
+			});
+
+		}
+
+		static handleResize() {
+
+			const debouncedResize = Utils.debounce(() => {
+
+				AppState.canvasInstances.forEach(canvas => {
+
+					try {
+
+						canvas.resize();
+
+					} catch (error) {
+
+						console.warn('Error redimensionando canvas:', error);
+
+					}
+
+				});
+
+			}, 250);
+
+			window.addEventListener('resize', debouncedResize);
+
+		}
+
+	}
+
+	class App {
+
+		static init() {
+
+			try {
+
+				this.initializeUI();
+				this.bindFormEvents();
+				this.initializeCanvas();
+				this.useQueryParams();
+
+			} catch (error) {
+
+				console.error('Error inicializando aplicación:', error);
+				NotificationManager.show('Error inicializando la aplicación', 'error');
+
+			}
+
+		}
+
+		static useQueryParams() {
+
+			const params = new URLSearchParams(window.location.search);
+
+			const reserva = params.get('booking') || '';
+			const codigoSeguridad = params.get('securitycode') || '';
+
+			document.querySelector('input[name="booking.id"]').value = reserva;
+			document.querySelector('input[name="booking.security_code"]').value = codigoSeguridad;
+
+		}
+
+		static initializeCanvas() {
+
+			try {
+
+				const initialCanvas = new SignatureCanvas('person_0_signature');
+				AppState.canvasInstances.set('person_0_signature', initialCanvas);
+
+			} catch (error) {
+
+				console.error('Error inicializando canvas inicial:', error);
+				throw error;
+
+			}
+
+		}
+
+		static bindFormEvents() {
+
+			const form = document.getElementById('travelers-form');
+
+			if (!form) {
+
+				console.warn('Formulario no encontrado');
+				return;
+
+			}
+
+			const debouncedValidation = Utils.debounce(FormValidator.updateSubmitButton.bind(FormValidator), 150);
+
+			form.addEventListener('input', debouncedValidation);
+			form.addEventListener('change', debouncedValidation);
+			form.addEventListener('submit', FormProcessor.submitForm.bind(FormProcessor));
+
+		}
+
+		static initializeUI() {
+
+			UIManager.initializeDetailsToggle();
+			UIManager.handleResize();
+			FormValidator.updateSubmitButton();
+
+		}
+
+	}
+
+	window.addPerson = PersonManager.addPerson.bind(PersonManager);
+	window.removePerson = PersonManager.removePerson.bind(PersonManager);
+	window.clearSignature = PersonManager.clearSignature.bind(PersonManager);
+
+	window.PersonManager = PersonManager;
+	window.FormValidator = FormValidator;
+	window.NotificationManager = NotificationManager;
+
+	App.init();
+
+</script>
