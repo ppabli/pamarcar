@@ -1,5 +1,7 @@
 FROM python:3.11-slim
 
+LABEL maintainer="Pablo Liste Cancela <ppabli12@gmail.com>"
+
 WORKDIR /app
 
 COPY requirements.txt .

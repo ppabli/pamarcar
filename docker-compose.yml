@@ -1,5 +1,6 @@
 volumes:
   db-data:
+  rabbitmq-data:
 
 networks:
   default:
@@ -34,6 +35,8 @@ services:
       - "5672:5672"
     networks:
       - default
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
 
   api:
     build:
